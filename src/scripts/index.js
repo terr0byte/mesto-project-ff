@@ -1,10 +1,7 @@
 import "../pages/index.css";
 import initialCards from "./cards";
 import { createCard, deleteCard, likeCard } from "../components/card.js";
-import {
-  handleOpenPopup,
-  closePopup,
-} from "../components/modal.js";
+import { handleOpenPopup, closePopup } from "../components/modal.js";
 
 //DOM узлы
 const cardContainer = document.querySelector(".places__list");
@@ -28,68 +25,60 @@ const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
 
 //Открытие Попапов
-function openEditPopup(evt) {
-  if (evt.target === editProfileButton) {
-    const name = profileName.textContent;
-    const job = profileJob.textContent;
-    nameInput.value = name;
-    jobInput.value = job;
-    handleOpenPopup(editProfilePopup);
-  }
-  if (evt.target === addMestoButton) {
-    handleOpenPopup(addMestoPopup);
-  }
+function openEditPopup() {
+  const name = profileName.textContent;
+  const job = profileJob.textContent;
+  nameInput.value = name;
+  jobInput.value = job;
+  handleOpenPopup(editProfilePopup);
+}
+
+function openAddMestoPopup() {
+  handleOpenPopup(addMestoPopup);
 }
 
 function openImagePopup(evt) {
   popupImageLink.src = evt.target.src;
   popupCaption.textContent = evt.target.alt;
+  popupImageLink.alt = evt.target.alt;
   handleOpenPopup(popupImage);
 }
 
-// Обработчик «отправки» формы, хотя пока
-// она никуда отправляться не будет
 function handleFormSubmit(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-  // Так мы можем определить свою логику отправки.
-  // О том, как это делать, расскажем позже.
+  evt.preventDefault();
 
-  // Получите значение полей jobInput и nameInput из свойства value
-  if (evt.target === editFormElement) {
-    const openedPopup = document.querySelector(".popup_is-opened");
-    const name = nameInput.value;
-    const job = jobInput.value;
-    // Выберите элементы, куда должны быть вставлены значения полей
-    profileName.textContent = name;
-    profileJob.textContent = job;
-    closePopup(openedPopup);
-    // Вставьте новые значения с помощью textContent
-  } else if (evt.target === newCardFormElement) {
-    const openedPopup = document.querySelector(".popup_is-opened");
-    const cardName = cardNameInput.value;
-    const link = cardLinkInput.value;
-    cardContainer.prepend(
-      createCard(
-        { name: cardName, link: link },
-        {
-          deleteFunc: deleteCard,
-          likeFunc: likeCard,
-          openPopupFunc: openImagePopup,
-        }
-      )
-    );
-    cardNameInput.value = "";
-    cardLinkInput.value = "";
-    closePopup(openedPopup);
-  }
+  const name = nameInput.value;
+  const job = jobInput.value;
+
+  profileName.textContent = name;
+  profileJob.textContent = job;
+  closePopup(editProfilePopup);
 }
 
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-editFormElement.addEventListener("submit", handleFormSubmit);
-newCardFormElement.addEventListener("submit", handleFormSubmit);
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  const cardName = cardNameInput.value;
+  const link = cardLinkInput.value;
+  cardContainer.prepend(
+    createCard(
+      { name: cardName, link: link },
+      {
+        deleteFunc: deleteCard,
+        likeFunc: likeCard,
+        openPopupFunc: openImagePopup,
+      }
+    )
+  );
+  cardNameInput.value = "";
+  cardLinkInput.value = "";
+  closePopup(addMestoPopup);
+}
 
-document.addEventListener("click", openEditPopup);
+editFormElement.addEventListener("submit", handleFormSubmit);
+newCardFormElement.addEventListener("submit", handleCardFormSubmit);
+
+editProfileButton.addEventListener("click", openEditPopup);
+addMestoButton.addEventListener("click", openAddMestoPopup);
 
 //Вывести карточки на страницу
 initialCards.forEach((item) => {

@@ -3,11 +3,7 @@ function handleClosePopup(evt) {
   if (openedPopup) {
     const closeButton = openedPopup.querySelector(".popup__close");
 
-    if (evt.target === closeButton || evt.target === openedPopup) {
-      document.removeEventListener("click", handleClosePopup);
-      document.removeEventListener("keydown", handleClosePopup);
-      closePopup(openedPopup);
-    } else if (evt.key === "Escape") {
+    if (evt.target === closeButton || evt.target === openedPopup || evt.key === "Escape") {
       document.removeEventListener("click", handleClosePopup);
       document.removeEventListener("keydown", handleClosePopup);
       closePopup(openedPopup);
