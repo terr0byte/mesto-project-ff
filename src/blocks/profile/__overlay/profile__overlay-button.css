@@ -1,0 +1,19 @@
+.profile__overlay-button{
+    cursor: pointer;
+    background: #000000CC;
+    background-image: url('../../../images/edit-icon.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 26px;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.profile__overlay-button:hover{
+    opacity: 0.8;
+}
