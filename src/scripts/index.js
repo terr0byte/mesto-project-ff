@@ -82,7 +82,7 @@ function openAvatarPopup() {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const button = editFormElement.querySelector('.button');
-  let buttonText = button.textContent;
+  const buttonText = button.textContent;
   button.textContent = 'Сохранение...';
 
   patchUserInfo(nameInput.value, jobInput.value)
@@ -94,13 +94,16 @@ function handleProfileFormSubmit(evt) {
     .catch((err) => {
       console.log(err);
       closePopup(editProfilePopup);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
   const button = newCardFormElement.querySelector('.button');
-  let buttonText = button.textContent;
+  const buttonText = button.textContent;
   button.textContent = 'Сохранение...';
   postCard(cardNameInput.value, cardLinkInput.value)
     .then((cardData) => {
@@ -121,25 +124,29 @@ function handleCardFormSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   const button = editAvatarFormElement.querySelector('.button');
-  let buttonText = button.textContent;
+  const buttonText = button.textContent;
   button.textContent = 'Сохранение...';
   patchAvatar(avatarInput.value)
     .then(() => {
       profileImage.style.backgroundImage = `url(${avatarInput.value})`;
       avatarInput.value = "";
-      button.textContent = buttonText;
       closePopup(editAvatarPopup);
     })
     .catch((err) => {
       console.log(err);
-      button.textContent = buttonText;
       closePopup(editAvatarPopup);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
@@ -166,7 +173,7 @@ Promise.all([getUserInfo(), getInitialCards()])
           deleteFunc: deleteCard,
           likeFunc: likeCard,
           openPopupFunc: openImagePopup,
-          isOwned: (values[0]._id === item.owner._id ? true : false)
+          ownerID: values[0]._id
         })
       );
     });

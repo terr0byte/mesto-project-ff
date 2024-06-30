@@ -56,7 +56,7 @@
               required
               minlength="2"
               maxlength="40"
-              data-regex="[a-zа-яё]"
+              data-regex="^[a-zA-Zа-яёА-ЯЁ\s\-]+$"
             />
             <span class="name-error popup__error"></span>
             <input
@@ -68,7 +68,7 @@
               required
               minlength="2"
               maxlength="200"
-              data-regex="[a-zа-яё]"
+              data-regex="^[a-zA-Zа-яёА-ЯЁ\s\-]+$"
             />
             <span class="description-error popup__error"></span>
             <button type="submit" class="button popup__button">
@@ -88,7 +88,7 @@
               name="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
-              data-regex="[a-zа-яё\-\s]"
+              data-regex="^[a-zA-Zа-яёА-ЯЁ\s\-]+$"
               required
             />
             <span class="place-name-error popup__error"></span>
@@ -98,7 +98,7 @@
               name="link"
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на картинку"
-              data-regex="[\s\S]"
+              data-regex="^[a-zA-Zа-яёА-ЯЁ\s\-]+$"
               required
             />
             <span class="link-error popup__error"></span>
@@ -126,7 +126,7 @@
               name="avatar"
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на аватар"
-              data-regex="[\s\S]"
+              data-regex="^[a-zA-Zа-яёА-ЯЁ\s\-]+$"
               required
             />
             <span class="avatar-error popup__error"></span>
