@@ -8,8 +8,6 @@ function handleClosePopup(evt) {
       evt.target === openedPopup ||
       evt.key === "Escape"
     ) {
-      document.removeEventListener("click", handleClosePopup);
-      document.removeEventListener("keydown", handleClosePopup);
       closePopup(openedPopup);
     }
   }
@@ -22,6 +20,8 @@ function handleOpenPopup(popup) {
 }
 
 function closePopup(popup) {
+  document.removeEventListener("click", handleClosePopup);
+  document.removeEventListener("keydown", handleClosePopup);
   popup.classList.remove("popup_is-opened");
 }
 

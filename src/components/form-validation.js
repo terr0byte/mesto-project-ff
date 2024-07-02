@@ -19,7 +19,6 @@ function hideError(formElement, inputElement, inputErrorClass, errorClass) {
 }
 
 function checkInputValidity(formElement, inputElement, validationConfig) {
-  const regex = new RegExp(inputElement.dataset.regex, "gim");
   if (!inputElement.validity.valid) {
     showError(
       formElement,
@@ -28,11 +27,11 @@ function checkInputValidity(formElement, inputElement, validationConfig) {
       validationConfig.inputErrorClass,
       validationConfig.errorClass
     );
-  } else if (!regex.test(inputElement.value)) {
+  } else if (inputElement.validity.patternMismatch) {
     showError(
       formElement,
       inputElement,
-      "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы",
+      inputElement.dataset.regex,
       validationConfig.inputErrorClass,
       validationConfig.errorClass
     );
@@ -105,13 +104,17 @@ function enableValidation(validationConfig) {
   });
 }
 
-function clearValidation(profileForm, validationConfig) {
+function clearValidation(formElement, validationConfig) {
   const inputList = Array.from(
-    profileForm.querySelectorAll(validationConfig.inputSelector)
+    formElement.querySelectorAll(validationConfig.inputSelector)
   );
+  const buttonElement = formElement.querySelector(
+    validationConfig.submitButtonSelector
+  );
+  buttonElement.classList.add(validationConfig.inactiveButtonClass);
   inputList.forEach((inputElement) => {
     hideError(
-      profileForm,
+      formElement,
       inputElement,
       validationConfig.inputErrorClass,
       validationConfig.errorClass

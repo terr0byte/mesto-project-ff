@@ -63,8 +63,8 @@ function openEditPopup() {
 }
 
 function openAddMestoPopup() {
-  mestoInput.value = "";
-  mestoLink.value = "";
+  clearValidation(newCardFormElement, validationConfig);
+  newCardFormElement.reset();
   handleOpenPopup(addMestoPopup);
 }
 
@@ -82,11 +82,8 @@ function openAvatarPopup() {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const button = editFormElement.querySelector(".button");
-  let buttonText = button.textContent;
-  button.textContent = "Сохранение...";
-  const button = editFormElement.querySelector('.button');
   const buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
+  button.textContent = "Сохранение...";
 
   patchUserInfo(nameInput.value, jobInput.value)
     .then((userData) => {
@@ -106,23 +103,19 @@ function handleProfileFormSubmit(evt) {
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
   const button = newCardFormElement.querySelector(".button");
-  let buttonText = button.textContent;
-  button.textContent = "Сохранение...";
-  const button = newCardFormElement.querySelector('.button');
   const buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
+  button.textContent = "Сохранение...";
   postCard(cardNameInput.value, cardLinkInput.value)
     .then((cardData) => {
+      console.log(cardData);
       cardContainer.prepend(
         createCard(cardData, {
           deleteFunc: deleteCard,
           likeFunc: likeCard,
           openPopupFunc: openImagePopup,
-          isOwned: true,
+          ownerID: cardData.owner._id,
         })
       );
-      cardNameInput.value = "";
-      cardLinkInput.value = "";
       closePopup(addMestoPopup);
     })
     .catch((err) => {
@@ -138,12 +131,9 @@ function handleAvatarFormSubmit(evt) {
   const button = editAvatarFormElement.querySelector(".button");
   let buttonText = button.textContent;
   button.textContent = "Сохранение...";
-  const button = editAvatarFormElement.querySelector('.button');
-  const buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
   patchAvatar(avatarInput.value)
-    .then(() => {
-      profileImage.style.backgroundImage = `url(${avatarInput.value})`;
+    .then((res) => {
+      profileImage.style.backgroundImage = `url(${res.avatar})`;
       avatarInput.value = "";
       closePopup(editAvatarPopup);
     })
@@ -167,20 +157,19 @@ editAvatarButton.addEventListener("click", openAvatarPopup);
 enableValidation(validationConfig);
 
 Promise.all([getUserInfo(), getInitialCards()])
-  .then((values) => {
+  .then(([userInfo, cards]) => {
     //Обновление имени/статуса пользователя
-    profileName.textContent = values[0].name;
-    profileJob.textContent = values[0].about;
-    profileImage.style.backgroundImage = `url(${values[0].avatar})`;
+    profileName.textContent = userInfo.name;
+    profileJob.textContent = userInfo.about;
+    profileImage.style.backgroundImage = `url(${userInfo.avatar})`;
     //Отрисовка полученных карточек
-    values[1].forEach((item) => {
+    cards.forEach((item) => {
       cardContainer.append(
         createCard(item, {
           deleteFunc: deleteCard,
           likeFunc: likeCard,
           openPopupFunc: openImagePopup,
-          isOwned: values[0]._id === item.owner._id ? true : false,
-          ownerID: values[0]._id
+          ownerID: userInfo._id,
         })
       );
     });
