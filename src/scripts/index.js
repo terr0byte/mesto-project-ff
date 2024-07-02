@@ -158,6 +158,7 @@ enableValidation(validationConfig);
 
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userInfo, cards]) => {
+    console.log(cards);
     //Обновление имени/статуса пользователя
     profileName.textContent = userInfo.name;
     profileJob.textContent = userInfo.about;

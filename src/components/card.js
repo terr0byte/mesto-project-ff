@@ -16,7 +16,13 @@ function createCard(item, { deleteFunc, likeFunc, openPopupFunc, ownerID }) {
   likeCount.textContent = item.likes.length;
   cardElement.querySelector(".card__title").textContent = item.name;
 
-  const isOwned = ownerID === item.owner._id ? true : false;
+  const isOwned = ownerID === item.owner._id;
+
+  item.likes.forEach((item) => {
+    if (ownerID === item._id) {
+      likeButton.classList.add("card__like-button_is-active");
+    }
+  })
 
   if (!isOwned) {
     deleteButton.classList.add("card__delete-button_hidden");

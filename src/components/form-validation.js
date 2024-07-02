@@ -77,20 +77,17 @@ function hasInvalidInput(inputList) {
 
 function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(inactiveButtonClass);
+    disableSubmitButton(buttonElement, inactiveButtonClass)
   } else {
     buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.disabled = false;
   }
 }
 
-// validationConfig: {
-//  formSelector: '.popup__form',
-//  inputSelector: '.popup__input',
-//  submitButtonSelector: '.popup__button',
-//  inactiveButtonClass: 'popup__button-inactive',
-//  inputErrorClass: 'popup__input_type_error',
-//  errorClass: 'popup__error-visible'
-// }
+const disableSubmitButton = (button, inactiveButtonClass) => {
+  button.classList.add(inactiveButtonClass);
+  button.disabled = true;
+}
 
 function enableValidation(validationConfig) {
   const formList = Array.from(
@@ -111,7 +108,7 @@ function clearValidation(formElement, validationConfig) {
   const buttonElement = formElement.querySelector(
     validationConfig.submitButtonSelector
   );
-  buttonElement.classList.add(validationConfig.inactiveButtonClass);
+  disableSubmitButton(buttonElement, validationConfig.inactiveButtonClass);
   inputList.forEach((inputElement) => {
     hideError(
       formElement,
