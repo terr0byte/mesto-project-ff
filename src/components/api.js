@@ -10,10 +10,7 @@ export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -21,10 +18,7 @@ export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -37,10 +31,7 @@ export const patchUserInfo = (name, about) => {
       about: about,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -53,46 +44,34 @@ export const postCard = (name, link) => {
       link: link,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
-export const deleteCardFromServer = (card) => {
-  return fetch(`${config.baseUrl}/cards/${card._id} `, {
+export const deleteCardFromServer = (id) => {
+  return fetch(`${config.baseUrl}/cards/${id} `, {
     method: "DELETE",
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
-export const putLike = (card) => {
-  return fetch(`${config.baseUrl}/cards/likes/${card._id} `, {
+export const putLike = (id) => {
+  return fetch(`${config.baseUrl}/cards/likes/${id} `, {
     method: "PUT",
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
-export const deleteLike = (card) => {
-  return fetch(`${config.baseUrl}/cards/likes/${card._id}`, {
+export const deleteLike = (id) => {
+  return fetch(`${config.baseUrl}/cards/likes/${id}`, {
     method: "DELETE",
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -104,9 +83,13 @@ export const patchAvatar = (avatarURL) => {
       avatar: avatarURL,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
+};
+
+const handleResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
 };

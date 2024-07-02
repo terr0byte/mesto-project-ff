@@ -84,6 +84,9 @@ function handleProfileFormSubmit(evt) {
   const button = editFormElement.querySelector(".button");
   let buttonText = button.textContent;
   button.textContent = "Сохранение...";
+  const button = editFormElement.querySelector('.button');
+  const buttonText = button.textContent;
+  button.textContent = 'Сохранение...';
 
   patchUserInfo(nameInput.value, jobInput.value)
     .then((userData) => {
@@ -94,6 +97,9 @@ function handleProfileFormSubmit(evt) {
     .catch((err) => {
       console.log(err);
       closePopup(editProfilePopup);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
@@ -102,6 +108,9 @@ function handleCardFormSubmit(evt) {
   const button = newCardFormElement.querySelector(".button");
   let buttonText = button.textContent;
   button.textContent = "Сохранение...";
+  const button = newCardFormElement.querySelector('.button');
+  const buttonText = button.textContent;
+  button.textContent = 'Сохранение...';
   postCard(cardNameInput.value, cardLinkInput.value)
     .then((cardData) => {
       cardContainer.prepend(
@@ -118,6 +127,9 @@ function handleCardFormSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
@@ -126,17 +138,21 @@ function handleAvatarFormSubmit(evt) {
   const button = editAvatarFormElement.querySelector(".button");
   let buttonText = button.textContent;
   button.textContent = "Сохранение...";
+  const button = editAvatarFormElement.querySelector('.button');
+  const buttonText = button.textContent;
+  button.textContent = 'Сохранение...';
   patchAvatar(avatarInput.value)
     .then(() => {
       profileImage.style.backgroundImage = `url(${avatarInput.value})`;
       avatarInput.value = "";
-      button.textContent = buttonText;
       closePopup(editAvatarPopup);
     })
     .catch((err) => {
       console.log(err);
-      button.textContent = buttonText;
       closePopup(editAvatarPopup);
+    })
+    .finally(() => {
+      button.textContent = buttonText;
     });
 }
 
@@ -164,6 +180,7 @@ Promise.all([getUserInfo(), getInitialCards()])
           likeFunc: likeCard,
           openPopupFunc: openImagePopup,
           isOwned: values[0]._id === item.owner._id ? true : false,
+          ownerID: values[0]._id
         })
       );
     });
