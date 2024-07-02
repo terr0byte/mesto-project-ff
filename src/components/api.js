@@ -101,7 +101,7 @@ export const patchAvatar = (avatarURL) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar: avatarURL
+      avatar: avatarURL,
     }),
   }).then((res) => {
     if (res.ok) {
@@ -109,4 +109,4 @@ export const patchAvatar = (avatarURL) => {
     }
     return Promise.reject(`Ошибка: ${res.status}`);
   });
-}
+};

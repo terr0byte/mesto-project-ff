@@ -11,7 +11,7 @@ import {
   getUserInfo,
   patchUserInfo,
   postCard,
-  patchAvatar
+  patchAvatar,
 } from "../components/api.js";
 
 //DOM узлы
@@ -23,14 +23,14 @@ const editProfileButton = document.querySelector(".profile__edit-button");
 const popupImage = document.querySelector(".popup_type_image");
 const popupImageLink = popupImage.querySelector(".popup__image");
 const popupCaption = popupImage.querySelector(".popup__caption");
-const editAvatarPopup = document.querySelector('.popup_type_avatar');
-const editAvatarButton = document.querySelector('.profile__overlay-button');
-const profileImage = document.querySelector('.profile__image');
+const editAvatarPopup = document.querySelector(".popup_type_avatar");
+const editAvatarButton = document.querySelector(".profile__overlay-button");
+const profileImage = document.querySelector(".profile__image");
 
 // Находим форму в DOM
 const editFormElement = document.forms["edit-profile"];
 const newCardFormElement = document.forms["new-place"];
-const editAvatarFormElement = document.forms["edit-avatar"]
+const editAvatarFormElement = document.forms["edit-avatar"];
 // Находим поля формы в DOM
 const nameInput = editFormElement.name;
 const jobInput = editFormElement.description;
@@ -81,9 +81,9 @@ function openAvatarPopup() {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  const button = editFormElement.querySelector('.button');
+  const button = editFormElement.querySelector(".button");
   let buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
+  button.textContent = "Сохранение...";
 
   patchUserInfo(nameInput.value, jobInput.value)
     .then((userData) => {
@@ -99,21 +99,18 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  const button = newCardFormElement.querySelector('.button');
+  const button = newCardFormElement.querySelector(".button");
   let buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
+  button.textContent = "Сохранение...";
   postCard(cardNameInput.value, cardLinkInput.value)
     .then((cardData) => {
       cardContainer.prepend(
-        createCard(
-          cardData,
-          {
-            deleteFunc: deleteCard,
-            likeFunc: likeCard,
-            openPopupFunc: openImagePopup,
-            isOwned: true
-          }
-        )
+        createCard(cardData, {
+          deleteFunc: deleteCard,
+          likeFunc: likeCard,
+          openPopupFunc: openImagePopup,
+          isOwned: true,
+        })
       );
       cardNameInput.value = "";
       cardLinkInput.value = "";
@@ -126,9 +123,9 @@ function handleCardFormSubmit(evt) {
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-  const button = editAvatarFormElement.querySelector('.button');
+  const button = editAvatarFormElement.querySelector(".button");
   let buttonText = button.textContent;
-  button.textContent = 'Сохранение...';
+  button.textContent = "Сохранение...";
   patchAvatar(avatarInput.value)
     .then(() => {
       profileImage.style.backgroundImage = `url(${avatarInput.value})`;
@@ -149,7 +146,7 @@ editAvatarFormElement.addEventListener("submit", handleAvatarFormSubmit);
 
 editProfileButton.addEventListener("click", openEditPopup);
 addMestoButton.addEventListener("click", openAddMestoPopup);
-editAvatarButton.addEventListener('click', openAvatarPopup);
+editAvatarButton.addEventListener("click", openAvatarPopup);
 
 enableValidation(validationConfig);
 
@@ -166,7 +163,7 @@ Promise.all([getUserInfo(), getInitialCards()])
           deleteFunc: deleteCard,
           likeFunc: likeCard,
           openPopupFunc: openImagePopup,
-          isOwned: (values[0]._id === item.owner._id ? true : false)
+          isOwned: values[0]._id === item.owner._id ? true : false,
         })
       );
     });
